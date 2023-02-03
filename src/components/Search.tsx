@@ -1,6 +1,6 @@
 import {
     Box,
-    Button, Checkbox, FormControlLabel,
+    Button, Checkbox, CircularProgress, FormControlLabel,
     TextField
 } from "@mui/material"
 import React, {useEffect, useRef, useState} from 'react'
@@ -47,6 +47,7 @@ function Search() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleSearch();
+            setIsLoading(false);
         }, 1000);
         return () => {
             clearTimeout(timeout);
@@ -58,6 +59,7 @@ function Search() {
     }
 
     const handleInputChange = () => {
+        setIsLoading(true)
         setLastChange(Date.now())
     }
 
@@ -99,17 +101,11 @@ function Search() {
                     name="university"
                     variant="standard"
                 />
-                {/*<Button*/}
-                {/*    type="submit"*/}
-                {/*    variant="contained"*/}
-                {/*    sx={{mt: 3, mb: 2}}*/}
-                {/*>*/}
-                {/*    Search*/}
-                {/*</Button>*/}
                 <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
                                   label={"მაჩვენე მხოლოდ მომავალი"}/>
             </Box>
-            <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/>
+            {!isLoading ? <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/> :
+                <CircularProgress/>}
         </div>
     )
 }
