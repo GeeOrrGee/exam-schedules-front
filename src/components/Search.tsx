@@ -37,7 +37,6 @@ function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValu
 }
 
 function Search() {
-
     const [examsList, setExamsList] = useState<ExamInfo[]>([])
 
     const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
