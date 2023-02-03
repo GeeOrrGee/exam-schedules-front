@@ -6,8 +6,32 @@ type PropType = {
     examsList : ExamInfo[]
 }
 
-function MyTable(props : PropType){
+function isFromFuture(date: string): boolean {
+    const currentDate: Date = new Date(Date.now())
+    const [examDay, examMonth] = date.split("/").map(item => parseInt(item))
+    const currentMonth = currentDate.getMonth() + 1
+    // Discard last year's exams
+    if (examMonth >= 10 && currentMonth < 8) {
+        return false
+    }
+    // Accept next year's exams
+    if (examMonth < 4 && currentMonth >= 10) {
+        return true
+    }
+    // Discard current year's past exams
+    if (examMonth < currentMonth) {
+        return false
+    }
+    // Final check
+    if (examMonth == currentMonth && examDay < currentDate.getDate()) {
+        return false;
+    }
+    return true;
+}
+
+function MyTable(props: PropType) {
     const examsList = props.examsList
+    const showOnlyFuture = props.showOnlyFuture
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
