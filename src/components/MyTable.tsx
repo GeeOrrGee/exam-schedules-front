@@ -3,7 +3,8 @@ import React from "react";
 import {ExamInfo} from "../interfaces/ExamInfo";
 
 type PropType = {
-    examsList : ExamInfo[]
+    examsList: ExamInfo[]
+    showOnlyFuture: boolean
 }
 
 function isFromFuture(date: string): boolean {
@@ -46,19 +47,22 @@ function MyTable(props: PropType) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {examsList.map((exam) => (
-                        <TableRow
-                            key={JSON.stringify(exam)}
-                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                        >
-                            <TableCell>{exam!.date}</TableCell>
-                            <TableCell>{exam.time}</TableCell>
-                            <TableCell>{exam.subject}</TableCell>
-                            <TableCell>{exam.lecturers.join(", ")}</TableCell>
-                            <TableCell>{exam.groups.join(", ")}</TableCell>
-                            <TableCell>{exam.university}</TableCell>
-                        </TableRow>
-                    ))}
+                    {
+                        examsList
+                            .filter(val => !showOnlyFuture || isFromFuture(val.date))
+                            .map((exam) => (
+                                <TableRow
+                                    key={JSON.stringify(exam)}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                >
+                                    <TableCell>{exam!.date}</TableCell>
+                                    <TableCell>{exam.time}</TableCell>
+                                    <TableCell>{exam.subject}</TableCell>
+                                    <TableCell>{exam.lecturers.join(", ")}</TableCell>
+                                    <TableCell>{exam.groups.join(", ")}</TableCell>
+                                    <TableCell>{exam.university}</TableCell>
+                                </TableRow>
+                            ))}
                 </TableBody>
             </Table>
         </TableContainer>
