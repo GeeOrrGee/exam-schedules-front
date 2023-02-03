@@ -3,7 +3,7 @@ import {
     Button, Checkbox, FormControlLabel,
     TextField
 } from "@mui/material"
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
@@ -37,18 +37,33 @@ function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValu
 }
 
 
-
 function Search() {
+    const ref = useRef(null);
     const [examsList, setExamsList] = useState<ExamInfo[]>([])
     const [onlyFutureExams, setOnlyFutureExams] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [lastChange, setLastChange] = useState<number>(0)
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            handleSearch();
+        }, 1000);
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [lastChange]);
 
     const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOnlyFutureExams(event.currentTarget.checked);
     }
 
-    const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
+    const handleInputChange = () => {
+        setLastChange(Date.now())
+    }
+
+    const handleSearch = () => {
+        if (ref.current == null) return
+        const data = new FormData(ref.current);
 
         const subject = data.get('subject')
         const lecturer = data.get('lecturer')
@@ -65,7 +80,7 @@ function Search() {
 
     return (
         <div>
-            <Box component="form" onSubmit={handleSearch} noValidate sx={{mt: 1}}>
+            <Box ref={ref} component="form" onChange={handleInputChange} noValidate sx={{mt: 1}}>
                 <TextField
                     margin="normal"
                     label="Subject"
@@ -84,14 +99,15 @@ function Search() {
                     name="university"
                     variant="standard"
                 />
-                <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{mt: 3, mb: 2}}
-                >
-                    Search
-                </Button>
-                <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>} label={"მაჩვენე მხოლოდ მომავალი"}/>
+                {/*<Button*/}
+                {/*    type="submit"*/}
+                {/*    variant="contained"*/}
+                {/*    sx={{mt: 3, mb: 2}}*/}
+                {/*>*/}
+                {/*    Search*/}
+                {/*</Button>*/}
+                <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
+                                  label={"მაჩვენე მხოლოდ მომავალი"}/>
             </Box>
             <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/>
         </div>
