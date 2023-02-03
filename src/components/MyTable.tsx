@@ -30,8 +30,8 @@ function MyTable(props : PropType){
                             <TableCell>{exam!.date}</TableCell>
                             <TableCell>{exam.time}</TableCell>
                             <TableCell>{exam.subject}</TableCell>
-                            <TableCell>{exam.lecturers}</TableCell>
-                            <TableCell>{exam.groups}</TableCell>
+                            <TableCell>{exam.lecturers.join(", ")}</TableCell>
+                            <TableCell>{exam.groups.join(", ")}</TableCell>
                             <TableCell>{exam.university}</TableCell>
                         </TableRow>
                     ))}
