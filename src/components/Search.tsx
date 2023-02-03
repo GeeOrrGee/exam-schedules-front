@@ -1,6 +1,6 @@
 import {
     Box,
-    Button,
+    Button, Checkbox, FormControlLabel,
     TextField
 } from "@mui/material"
 import React, {useState} from 'react'
@@ -36,8 +36,15 @@ function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValu
     return url
 }
 
+
+
 function Search() {
     const [examsList, setExamsList] = useState<ExamInfo[]>([])
+    const [onlyFutureExams, setOnlyFutureExams] = useState<boolean>(true)
+
+    const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setOnlyFutureExams(event.currentTarget.checked);
+    }
 
     const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -84,8 +91,9 @@ function Search() {
                 >
                     Search
                 </Button>
+                <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>} label={"მაჩვენე მხოლოდ მომავალი"}/>
             </Box>
-            <MyTable examsList={examsList}/>
+            <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/>
         </div>
     )
 }
