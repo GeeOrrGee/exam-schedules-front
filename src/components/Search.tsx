@@ -1,8 +1,4 @@
-import {
-    Box,
-    Button, Checkbox, CircularProgress, FormControlLabel,
-    TextField
-} from "@mui/material"
+import {Box, Checkbox, CircularProgress, FormControlLabel, TextField} from "@mui/material"
 import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
@@ -44,12 +40,16 @@ function Search() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [lastChange, setLastChange] = useState<number>(0)
 
+    let controller: any;
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleSearch();
             setIsLoading(false);
         }, 1000);
         return () => {
+            if (controller) {
+                controller.abort();
+            }
             clearTimeout(timeout);
         };
     }, [lastChange]);
@@ -72,8 +72,9 @@ function Search() {
         const uni = data.get('university')
 
         const url = getUrlForFetch(subject!, lecturer!, uni!)
+        controller = new AbortController()
 
-        axios.get(url)
+        axios.get(url, {signal: controller.signal})
             .then(response => {
                 setExamsList(response.data.examsList)
             })
