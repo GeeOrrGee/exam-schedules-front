@@ -5,6 +5,7 @@ import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
 import {queries} from "@testing-library/react";
 
+
 const startingUrl = "http://localhost:3636/filters/"
 
 function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValue, uni: FormDataEntryValue): string {
@@ -111,8 +112,11 @@ function Search() {
             </Box>
             <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
                               label={"მაჩვენე მხოლოდ მომავალი"}/>
-            {!isLoading ? <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/> :
-                <CircularProgress/>}
+            <Box>
+                {!isLoading ? <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/> :
+                    <CircularProgress/>
+                }
+            </Box>
         </Grid>
     )
 }
