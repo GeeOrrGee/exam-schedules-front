@@ -34,8 +34,8 @@ function MyTable(props: PropType) {
     const examsList = props.examsList
     const showOnlyFuture = props.showOnlyFuture
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{minWidth: 650}} aria-label="simple table">
+        <TableContainer component={Paper} sx={{width: '90%', ml: '5%', mb: '1%'}}>
+            <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell>თარიღი</TableCell>

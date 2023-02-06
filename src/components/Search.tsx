@@ -1,10 +1,11 @@
-import {Box, Checkbox, CircularProgress, FormControlLabel, TextField} from "@mui/material"
+import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, TextField} from "@mui/material"
 import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
+import {queries} from "@testing-library/react";
 
-const startingUrl = "http://localhost:5000/filters/"
+const startingUrl = "http://localhost:3636/filters/"
 
 function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValue, uni: FormDataEntryValue): string {
     let isThisFirst: boolean = true
@@ -82,19 +83,24 @@ function Search() {
     }
 
     return (
-        <div>
+        <Grid alignItems="center" justifyContent="center">
             <Box ref={ref} component="form" onChange={handleInputChange} noValidate sx={{mt: 1}}>
                 <TextField
                     margin="normal"
                     label="Subject"
                     name="subject"
                     variant="standard"
+
                 />
                 <TextField
                     margin="normal"
                     label="Lecturer"
                     name="lecturer"
                     variant="standard"
+                    sx={{
+                        ml: 2,
+                        mr: 2
+                    }}
                 />
                 <TextField
                     margin="normal"
@@ -102,12 +108,12 @@ function Search() {
                     name="university"
                     variant="standard"
                 />
-                <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
-                                  label={"მაჩვენე მხოლოდ მომავალი"}/>
             </Box>
+            <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
+                              label={"მაჩვენე მხოლოდ მომავალი"}/>
             {!isLoading ? <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/> :
                 <CircularProgress/>}
-        </div>
+        </Grid>
     )
 }
 
