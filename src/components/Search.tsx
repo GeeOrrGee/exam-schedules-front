@@ -45,7 +45,6 @@ function Search() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             handleSearch();
-            setIsLoading(false);
         }, 1000);
         return () => {
             if (controller) {
@@ -78,6 +77,7 @@ function Search() {
         axios.get(url, {signal: controller.signal})
             .then(response => {
                 setExamsList(response.data.examsList)
+                setIsLoading(false);
             })
             .catch(err => console.log(err))
     }
