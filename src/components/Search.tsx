@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
-import {queries} from "@testing-library/react";
 
 
 const startingUrl = "http://localhost:3636/filters/"

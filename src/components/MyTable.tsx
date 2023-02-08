@@ -24,10 +24,8 @@ function isFromFuture(date: string): boolean {
         return false
     }
     // Final check
-    if (examMonth == currentMonth && examDay < currentDate.getDate()) {
-        return false;
-    }
-    return true;
+    return !(examMonth === currentMonth && examDay < currentDate.getDate());
+
 }
 
 function MyTable(props: PropType) {
@@ -39,7 +37,8 @@ function MyTable(props: PropType) {
                 <TableHead>
                     <TableRow>
                         <TableCell>თარიღი</TableCell>
-                        <TableCell>დრო</TableCell>
+                        <TableCell>დაწყების დრო</TableCell>
+                        <TableCell>დამთავრების დრო</TableCell>
                         <TableCell>საგანი</TableCell>
                         <TableCell>ლექტორი</TableCell>
                         <TableCell>ჯგუფი</TableCell>
@@ -56,7 +55,8 @@ function MyTable(props: PropType) {
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
                                     <TableCell>{exam!.date}</TableCell>
-                                    <TableCell>{exam.time}</TableCell>
+                                    <TableCell>{exam.time.split('-')[0]}</TableCell>
+                                    <TableCell>{exam.time.split('-')[1]}</TableCell>
                                     <TableCell>{exam.subject}</TableCell>
                                     <TableCell>{exam.lecturers.join(", ")}</TableCell>
                                     <TableCell>{exam.groups.join(", ")}</TableCell>
