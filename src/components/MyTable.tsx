@@ -55,8 +55,8 @@ function MyTable(props: PropType) {
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
                                     <TableCell>{exam!.date}</TableCell>
-                                    <TableCell>{exam.time.substring(0, 5)}</TableCell>
-                                    <TableCell>{exam.time.substring(6)}</TableCell>
+                                    <TableCell>{exam.time.split('-')[0]}</TableCell>
+                                    <TableCell>{exam.time.split('-')[1]}</TableCell>
                                     <TableCell>{exam.subject}</TableCell>
                                     <TableCell>{exam.lecturers.join(", ")}</TableCell>
                                     <TableCell>{exam.groups.join(", ")}</TableCell>
