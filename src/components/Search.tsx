@@ -1,11 +1,25 @@
-import {Box, Checkbox, CircularProgress, FormControlLabel, Grid, TextField} from "@mui/material"
+import {
+    Box,
+    Checkbox,
+    CircularProgress,
+    FormControl,
+    FormControlLabel,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField
+} from "@mui/material"
 import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
 
-
 const startingUrl = "http://localhost:3636/filters/"
+
+// Global object used to abort current requests
+let abortController: any;
 
 function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValue, uni: FormDataEntryValue): string {
     let isThisFirst: boolean = true
@@ -40,19 +54,38 @@ function Search() {
     const [onlyFutureExams, setOnlyFutureExams] = useState<boolean>(true)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [lastChange, setLastChange] = useState<number>(0)
+    const [uniForTheme, setUniForTheme] = useState<"primary" | "secondary" | "info">("primary")
+    const [currUni, setCurrUni] = useState<string>("Freeuni")
 
-    let controller: any;
+
     useEffect(() => {
+        const handleSearch = () => {
+            if (ref.current == null) return
+            const data = new FormData(ref.current);
+
+            const subject = data.get('subject')
+            const lecturer = data.get('lecturer')
+            const url = getUrlForFetch(subject!, lecturer!, (currUni)!)
+            abortController = new AbortController()
+
+            axios.get(url, {signal: abortController.signal})
+                .then(response => {
+                    setExamsList(response.data.examsList)
+                    setIsLoading(false);
+                })
+                .catch(err => console.log(err))
+        }
+
         const timeout = setTimeout(() => {
             handleSearch();
         }, 1000);
         return () => {
-            if (controller) {
-                controller.abort();
+            if (abortController) {
+                abortController.abort();
             }
             clearTimeout(timeout);
         };
-    }, [lastChange]);
+    }, [lastChange, currUni]);
 
     const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOnlyFutureExams(event.currentTarget.checked);
@@ -63,23 +96,20 @@ function Search() {
         setLastChange(Date.now())
     }
 
-    const handleSearch = () => {
-        if (ref.current == null) return
-        const data = new FormData(ref.current);
-
-        const subject = data.get('subject')
-        const lecturer = data.get('lecturer')
-        const uni = data.get('university')
-
-        const url = getUrlForFetch(subject!, lecturer!, uni!)
-        controller = new AbortController()
-
-        axios.get(url, {signal: controller.signal})
-            .then(response => {
-                setExamsList(response.data.examsList)
-                setIsLoading(false);
-            })
-            .catch(err => console.log(err))
+    const switchUni = (event: SelectChangeEvent) => {
+        setCurrUni(event.target.value)
+        switch (event.target.value) {
+            case "Freeuni":
+                setUniForTheme("primary")
+                break
+            case "Agruni":
+                setUniForTheme("secondary")
+                break
+            case "Culinary":
+                setUniForTheme("info")
+                break
+        }
+        handleInputChange()
     }
 
     return (
@@ -90,7 +120,7 @@ function Search() {
                     label="Subject"
                     name="subject"
                     variant="standard"
-
+                    color={uniForTheme}
                 />
                 <TextField
                     margin="normal"
@@ -101,19 +131,28 @@ function Search() {
                         ml: 2,
                         mr: 2
                     }}
+                    color={uniForTheme}
                 />
-                <TextField
-                    margin="normal"
-                    label="University"
-                    name="university"
-                    variant="standard"
-                />
+                <FormControl variant="standard" sx={{mt: 2, minWidth: 120}}>
+                    <InputLabel color={uniForTheme}>University</InputLabel>
+                    <Select
+                        label="University"
+                        value={currUni}
+                        color={uniForTheme}
+                        onChange={switchUni}
+                    >
+                        <MenuItem value={"Freeuni"}>Freeuni</MenuItem>
+                        <MenuItem value={"Agruni"}>Agruni</MenuItem>
+                        <MenuItem value={"Culinary"}>Culinary</MenuItem>
+                    </Select>
+                </FormControl>
             </Box>
-            <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
-                              label={"მაჩვენე მხოლოდ მომავალი"}/>
+            <FormControlLabel
+                control={<Checkbox color={uniForTheme} checked={onlyFutureExams} onChange={handleSwitch}/>}
+                label={"მაჩვენე მხოლოდ მომავალი"}/>
             <Box>
                 {!isLoading ? <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/> :
-                    <CircularProgress/>
+                    <CircularProgress color={uniForTheme}/>
                 }
             </Box>
         </Grid>
