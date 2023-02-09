@@ -138,6 +138,7 @@ function Search() {
                     <Select
                         label="University"
                         value={currUni}
+                        color={uniForTheme}
                         onChange={switchUni}
                     >
                         <MenuItem value={"Freeuni"}>Freeuni</MenuItem>
