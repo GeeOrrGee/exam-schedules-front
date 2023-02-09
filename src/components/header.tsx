@@ -1,11 +1,19 @@
-import {Box, Typography} from "@mui/material";
+import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
 import React from "react";
 
 function Header() {
     return (
-        <Box>
-            <Typography>Exam schedules</Typography>
-        </Box>
+        <div>
+            <AppBar>
+                <Toolbar>
+                    <Typography variant="h6" noWrap>
+                        Exam Schedules
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Toolbar>
+            </Toolbar>
+        </div>
     )
 }
 
