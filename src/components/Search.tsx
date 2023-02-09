@@ -133,12 +133,10 @@ function Search() {
                     }}
                     color={uniForTheme}
                 />
-                <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
-                    <InputLabel id="demo-simple-select-label" color={uniForTheme}>Age</InputLabel>
+                <FormControl variant="standard" sx={{m: 2, minWidth: 120}}>
+                    <InputLabel color={uniForTheme}>University</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Age"
+                        label="University"
                         value={currUni}
                         onChange={switchUni}
                     >
