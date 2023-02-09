@@ -40,6 +40,7 @@ function Search() {
     const [onlyFutureExams, setOnlyFutureExams] = useState<boolean>(true)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [lastChange, setLastChange] = useState<number>(0)
+    const [uniForTheme, setUniForTheme] = useState<"primary" | "secondary" | "info">("info")
 
     let controller: any;
     useEffect(() => {
@@ -90,7 +91,7 @@ function Search() {
                     label="Subject"
                     name="subject"
                     variant="standard"
-
+                    color={uniForTheme}
                 />
                 <TextField
                     margin="normal"
@@ -101,19 +102,21 @@ function Search() {
                         ml: 2,
                         mr: 2
                     }}
+                    color={uniForTheme}
                 />
                 <TextField
                     margin="normal"
                     label="University"
                     name="university"
                     variant="standard"
+                    color={uniForTheme}
                 />
             </Box>
-            <FormControlLabel control={<Checkbox checked={onlyFutureExams} onChange={handleSwitch}/>}
+            <FormControlLabel control={<Checkbox color={uniForTheme} checked={onlyFutureExams} onChange={handleSwitch}/>}
                               label={"მაჩვენე მხოლოდ მომავალი"}/>
             <Box>
                 {!isLoading ? <MyTable examsList={examsList} showOnlyFuture={onlyFutureExams}/> :
-                    <CircularProgress/>
+                    <CircularProgress color={uniForTheme}/>
                 }
             </Box>
         </Grid>
