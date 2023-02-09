@@ -133,7 +133,7 @@ function Search() {
                     }}
                     color={uniForTheme}
                 />
-                <FormControl variant="standard" sx={{m: 2, minWidth: 120}}>
+                <FormControl variant="standard" sx={{mt: 2, minWidth: 120}}>
                     <InputLabel color={uniForTheme}>University</InputLabel>
                     <Select
                         label="University"
