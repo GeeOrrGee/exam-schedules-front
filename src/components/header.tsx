@@ -1,9 +1,9 @@
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Toolbar, Typography} from "@mui/material";
 import React from "react";
 
 function Header() {
     return (
-        <div>
+        <div style={{height: '50px'}}>
             <AppBar>
                 <Toolbar>
                     <Typography variant="h6" noWrap>
@@ -11,8 +11,6 @@ function Header() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Toolbar>
-            </Toolbar>
         </div>
     )
 }
