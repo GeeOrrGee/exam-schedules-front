@@ -16,37 +16,10 @@ import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
 
-const startingUrl = "http://localhost:3636/filters/"
+const startingUrl = process.env.SERVER_URL || "http://localhost:3636/filters/"
 
 // Global object used to abort current requests
 let abortController: any;
-
-function getUrlForFetch(subject: FormDataEntryValue, lecturer: FormDataEntryValue, uni: FormDataEntryValue): string {
-    let isThisFirst: boolean = true
-    let url = startingUrl
-    if (subject !== "") {
-        if (isThisFirst) {
-            isThisFirst = false
-            url += "?"
-        }
-        url += `&subject="${subject}"`
-    }
-    if (lecturer !== "") {
-        if (isThisFirst) {
-            isThisFirst = false
-            url += "?"
-        }
-        url += `&lecturer="${lecturer}"`
-    }
-    if (uni !== "") {
-        if (isThisFirst) {
-            url += "?"
-        }
-        url += `&university="${uni}"`
-    }
-    return url
-}
-
 
 function Search() {
     const ref = useRef(null);
@@ -65,10 +38,12 @@ function Search() {
 
             const subject = data.get('subject')
             const lecturer = data.get('lecturer')
-            const url = getUrlForFetch(subject!, lecturer!, (currUni)!)
             abortController = new AbortController()
 
-            axios.get(url, {signal: abortController.signal})
+            axios.get(startingUrl, {
+                signal: abortController.signal,
+                params: {lecturer: lecturer, university: currUni, subject: subject}
+            })
                 .then(response => {
                     setExamsList(response.data.examsList)
                     setIsLoading(false);
