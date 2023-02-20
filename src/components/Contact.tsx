@@ -1,41 +1,12 @@
 import React, {useState} from "react";
-import {Button, TextField, Typography} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 
-interface Styles {
-    [key: string]: React.CSSProperties;
+interface ContactFormProps {
+    open: boolean;
+    onClose: () => void;
 }
 
-const styles: Styles = {
-
-    root: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "30px"
-    },
-    form: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "16px",
-        //border: "1px solid #3f51b5",
-        borderRadius: "4px",
-        maxWidth: "500px",
-    },
-    input: {
-        margin: "8px",
-        width: "100%",
-    },
-    button: {
-        marginTop: "16px",
-        alignSelf: "flex-end",
-    },
-    title: {
-        marginBottom: "16px",
-    },
-};
-
-function Contact() {
+function Contact({open, onClose}: ContactFormProps) {
 
     const [formData, setFormData] = useState({
         name: "",
@@ -69,51 +40,54 @@ function Contact() {
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [event.target.name]: event.target.value });
+        setFormData({...formData, [event.target.name]: event.target.value});
     };
 
     return (
-        <div style={styles.root}>
-            <form style={styles.form} onSubmit={handleSubmit}>
-                <Typography variant="h5" style={styles.title}>
-                    Contact Us
-                </Typography>
-                <TextField
-                    label="Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    style={styles.input}
-                    required
-                />
-                <TextField
-                    label="Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    style={styles.input}
-                    required
-                />
-                <TextField
-                    label="Message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    multiline
-                    rows={4}
-                    style={styles.input}
-                    required
-                />
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    style={styles.button}
-                >
-                    Send
-                </Button>
+        <Dialog open={open} onClose={onClose} aria-labelledby="contact-dialog-title">
+            <form onSubmit={handleSubmit}>
+                <DialogTitle id="contact-dialog-title">Contact Us</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        fullWidth
+                        margin="dense"
+                        required
+                    />
+                    <TextField
+                        label="Email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        fullWidth
+                        margin="dense"
+                        required
+                    />
+                    <TextField
+                        label="Message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        multiline
+                        rows={4}
+                        fullWidth
+                        margin="dense"
+                        required
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button type="submit" variant="contained" color="primary">
+                        Send
+                    </Button>
+                </DialogActions>
             </form>
-        </div>
+        </Dialog>
     );
 }
 

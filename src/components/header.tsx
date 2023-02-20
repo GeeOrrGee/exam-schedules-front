@@ -1,5 +1,6 @@
 import {AppBar, Toolbar, Typography} from "@mui/material";
 import React from "react";
+import ContactButton from "./ContactButton";
 
 function Header() {
     return (
@@ -11,12 +12,13 @@ function Header() {
                             Exam Schedules
                         </Typography>
                     </a>
-                    <a href={'/contact'} style={{
+                    <div style={{
                         display: "block",
-                        marginLeft: "auto",
-                        textDecoration: "none",
-                        color: "white"
-                    }}>კონტაქტი</a>
+                        marginLeft: "auto"
+                    }}>
+                        <ContactButton/>
+                    </div>
+
                 </Toolbar>
             </AppBar>
         </div>
