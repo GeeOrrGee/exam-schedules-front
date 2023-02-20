@@ -6,9 +6,17 @@ function Header() {
         <div style={{height: '50px'}}>
             <AppBar>
                 <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Exam Schedules
-                    </Typography>
+                    <a href={'/'} style={{textDecoration: "none", color: "white"}}>
+                        <Typography variant="h6" noWrap>
+                            Exam Schedules
+                        </Typography>
+                    </a>
+                    <a href={'/contact'} style={{
+                        display: "block",
+                        marginLeft: "auto",
+                        textDecoration: "none",
+                        color: "white"
+                    }}>კონტაქტი</a>
                 </Toolbar>
             </AppBar>
         </div>
