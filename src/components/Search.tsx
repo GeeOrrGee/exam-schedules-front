@@ -16,7 +16,7 @@ import axios from 'axios'
 import {ExamInfo} from '../interfaces/ExamInfo'
 import MyTable from './MyTable'
 
-const startingUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:3636/filters/"
+const startingUrl = (process.env.REACT_APP_SERVER_URL || "http://localhost:3636/") + "filters/"
 
 // Global object used to abort current requests
 let abortController: any;

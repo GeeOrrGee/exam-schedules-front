@@ -1,5 +1,16 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField
+} from "@mui/material";
+
+const startingUrl = (process.env.REACT_APP_SERVER_URL || "http://localhost:3636/") + "send-email"
 
 interface ContactFormProps {
     open: boolean;
@@ -14,29 +25,36 @@ function Contact({open, onClose}: ContactFormProps) {
         message: "",
     });
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
+    const [message, setMessage] = useState<string>("");
+    const [messageColor, setMessageColor] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-        const response = await fetch("http://localhost:3636/send-email", {
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        setIsSubmitting(true)
+        fetch(startingUrl, {
             method: "POST",
             body: JSON.stringify(formData),
             headers: {
                 "Content-Type": "application/json",
             },
-        })
-
-        if (response.status == 200) {
-            alert("Your message was sent successfully!");
+        }).then(_ => {
+            setIsSubmitting(false)
+            setMessage("Your message was sent successfully!");
+            setMessageColor("green")
             setFormData({
                 name: "",
                 email: "",
                 message: "",
             });
-        } else {
-            alert(
-                "Sorry, there was an error sending your message. Please try again."
-            );
-        }
+        })
+            .catch(_ => {
+                setIsSubmitting(false)
+                setMessage(
+                    "Sorry, there was an error sending your message. Please try again."
+                );
+                setMessageColor("red")
+            })
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,12 +95,16 @@ function Contact({open, onClose}: ContactFormProps) {
                         margin="dense"
                         required
                     />
+                    {isSubmitting && <CircularProgress size={24} />}
+                    {message && (
+                        <DialogContentText style={{ color: messageColor }}>{message}</DialogContentText>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose} color="primary">
                         Cancel
                     </Button>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                         Send
                     </Button>
                 </DialogActions>
