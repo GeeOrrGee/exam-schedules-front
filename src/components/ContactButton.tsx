@@ -2,7 +2,11 @@ import {Button} from "@mui/material";
 import React, {useState} from "react";
 import ContactForm from "./Contact";
 
-function ContactButton() {
+interface ContactButtonProps {
+    uniForTheme: "primary" | "secondary" | "info"
+}
+
+function ContactButton({uniForTheme}: ContactButtonProps) {
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -15,10 +19,10 @@ function ContactButton() {
 
     return (
         <>
-            <Button variant="contained" color="primary" onClick={handleOpen}>
+            <Button variant="contained" color={uniForTheme} onClick={handleOpen}>
                 Contact Us
             </Button>
-            <ContactForm open={open} onClose={handleClose}/>
+            <ContactForm open={open} onClose={handleClose} uniForTheme={uniForTheme}/>
         </>
     );
 }

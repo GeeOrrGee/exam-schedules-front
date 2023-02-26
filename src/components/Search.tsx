@@ -21,14 +21,19 @@ const startingUrl = (process.env.REACT_APP_SERVER_URL || "http://localhost:3636/
 // Global object used to abort current requests
 let abortController: any;
 
-function Search() {
+interface SearchProps {
+    uniForTheme: "primary" | "secondary" | "info",
+    setTheme: (arg0: "primary" | "secondary" | "info") => void,
+    currUni: string
+    setUni: (arg0: string) => void
+}
+
+function Search({uniForTheme, setTheme, currUni, setUni}: SearchProps) {
     const ref = useRef(null);
     const [examsList, setExamsList] = useState<ExamInfo[]>([])
     const [onlyFutureExams, setOnlyFutureExams] = useState<boolean>(true)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [lastChange, setLastChange] = useState<number>(0)
-    const [uniForTheme, setUniForTheme] = useState<"primary" | "secondary" | "info">("primary")
-    const [currUni, setCurrUni] = useState<string>("Freeuni")
 
 
     useEffect(() => {
@@ -72,16 +77,16 @@ function Search() {
     }
 
     const switchUni = (event: SelectChangeEvent) => {
-        setCurrUni(event.target.value)
+        setUni(event.target.value)
         switch (event.target.value) {
             case "Freeuni":
-                setUniForTheme("primary")
+                setTheme("primary")
                 break
             case "Agruni":
-                setUniForTheme("secondary")
+                setTheme("secondary")
                 break
             case "Culinary":
-                setUniForTheme("info")
+                setTheme("info")
                 break
         }
         handleInputChange()

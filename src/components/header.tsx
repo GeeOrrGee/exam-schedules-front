@@ -2,7 +2,11 @@ import {AppBar, Toolbar, Typography} from "@mui/material";
 import React from "react";
 import ContactButton from "./ContactButton";
 
-function Header() {
+interface HeaderProps {
+    uniForTheme: "primary" | "secondary" | "info"
+}
+
+function Header({uniForTheme}: HeaderProps) {
     return (
         <div style={{height: '50px'}}>
             <AppBar>
@@ -16,7 +20,7 @@ function Header() {
                         display: "block",
                         marginLeft: "auto"
                     }}>
-                        <ContactButton/>
+                        <ContactButton uniForTheme={uniForTheme}/>
                     </div>
 
                 </Toolbar>

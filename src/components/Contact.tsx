@@ -15,9 +15,10 @@ const startingUrl = (process.env.REACT_APP_SERVER_URL || "http://localhost:3636/
 interface ContactFormProps {
     open: boolean;
     onClose: () => void;
+    uniForTheme: "primary" | "secondary" | "info";
 }
 
-function Contact({open, onClose}: ContactFormProps) {
+function Contact({open, onClose, uniForTheme}: ContactFormProps) {
 
     const [formData, setFormData] = useState({
         name: "",
@@ -96,16 +97,16 @@ function Contact({open, onClose}: ContactFormProps) {
                         margin="dense"
                         required
                     />
-                    {isSubmitting && <CircularProgress size={24} />}
+                    {isSubmitting && <CircularProgress size={24}/>}
                     {message && (
-                        <DialogContentText style={{ color: messageColor }}>{message}</DialogContentText>
+                        <DialogContentText style={{color: messageColor}}>{message}</DialogContentText>
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onClose} color="primary">
+                    <Button onClick={onClose} color={uniForTheme}>
                         Cancel
                     </Button>
-                    <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+                    <Button type="submit" variant="contained" color={uniForTheme} disabled={isSubmitting}>
                         Send
                     </Button>
                 </DialogActions>
