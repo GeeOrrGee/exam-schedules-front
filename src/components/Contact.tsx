@@ -78,6 +78,7 @@ function Contact({open, onClose}: ContactFormProps) {
                     <TextField
                         label="Email"
                         name="email"
+                        type="email"
                         value={formData.email}
                         onChange={handleChange}
                         fullWidth
