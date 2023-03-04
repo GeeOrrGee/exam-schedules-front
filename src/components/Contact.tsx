@@ -98,7 +98,7 @@ function Contact({open, onClose, uniForTheme}: ContactFormProps) {
                         required
                     />
                     {isSubmitting && <CircularProgress size={24}/>}
-                    {message && (
+                    {message && !isSubmitting && (
                         <DialogContentText style={{color: messageColor}}>{message}</DialogContentText>
                     )}
                 </DialogContent>
