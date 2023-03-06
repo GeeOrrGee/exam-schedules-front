@@ -30,6 +30,22 @@ function Contact({open, onClose, uniForTheme}: ContactFormProps) {
     const [messageColor, setMessageColor] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+    const doesNotSend = () => {
+        setMessage(
+            "Sorry, there was an error sending your message. Please try again."
+        );
+        setMessageColor("red")
+    }
+    const successfullySend = () => {
+        setMessage("Your message was sent successfully!");
+        setMessageColor("green")
+        setFormData({
+            name: "",
+            email: "",
+            message: "",
+        });
+    }
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
         setIsSubmitting(true)
@@ -39,22 +55,17 @@ function Contact({open, onClose, uniForTheme}: ContactFormProps) {
             headers: {
                 "Content-Type": "application/json",
             },
-        }).then(_ => {
+        }).then(response => {
             setIsSubmitting(false)
-            setMessage("Your message was sent successfully!");
-            setMessageColor("green")
-            setFormData({
-                name: "",
-                email: "",
-                message: "",
-            });
+            if (response.ok) {
+                successfullySend()
+            } else {
+                doesNotSend()
+            }
         })
             .catch(_ => {
                 setIsSubmitting(false)
-                setMessage(
-                    "Sorry, there was an error sending your message. Please try again."
-                );
-                setMessageColor("red")
+                doesNotSend()
             })
     };
 
